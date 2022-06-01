@@ -259,7 +259,11 @@ impl Deployment {
             while let Some(item) = stream.next().await {
                 match item {
                     Ok(attr) => {
-                        let node_name = NodeName::new(attr.attribute().to_owned())?;
+                        let node_name = NodeName::new(
+                            attr.attribute()
+                            .trim_start_matches('"')
+                            .trim_end_matches('"')
+                            .to_owned())?;
                         let profile_drv: ProfileDerivation = attr.into_derivation()?;
 
                         // FIXME: Consolidate
